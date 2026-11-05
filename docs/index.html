@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A preview of Pig Services, a local pig breeding and veterinary service coordination system for Bindoy, Negros Oriental.">
+    <title>Pig Services | System Preview</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        .preview-note { margin: 0 auto 32px; padding: 18px 22px; border-left: 4px solid var(--orange); background: #fff; }
+        .preview-note p { margin: 0; }
+        .preview-note strong { color: var(--ink); }
+        .preview-tag { display: inline-flex; align-items: center; min-height: 28px; padding: 4px 10px; border-radius: 6px; background: var(--lime); color: var(--green-dark); font-size: .75rem; font-weight: 700; }
+        .preview-footer { padding: 28px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+        @media (max-width: 760px) {
+            .landing-header { align-items: flex-start; flex-direction: column; gap: 12px; padding: 14px 0; }
+            .landing-nav { width: 100%; flex-wrap: wrap; gap: 10px 14px; }
+            .auth-layout { min-height: auto; grid-template-columns: 1fr; gap: 28px; padding-top: 36px; }
+            .hero-visual img { max-height: 330px; }
+            .preview-note { margin-bottom: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="shell topbar landing-header">
+        <a class="brand" href="#home"><span class="brand-mark">P</span> Pig Services</a>
+        <nav class="nav landing-nav" aria-label="Main navigation">
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#services">Services</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#features">Features</a>
+            <a href="#contact">Contact</a>
+            <a class="button light small" href="#preview-note">Preview</a>
+        </nav>
+    </header>
+    <main id="home">
+        <div class="shell auth-layout">
+            <section class="auth-intro">
+                <span class="eyebrow">A trusted local network</span>
+                <span class="preview-tag">SYSTEM PREVIEW</span>
+                <h1>Better matches for healthier piglets.</h1>
+                <p class="hero-copy">A local platform concept for connecting pig owners with breeding partners and veterinary services in Bindoy, Negros Oriental.</p>
+                <div class="hero-actions"><a class="button primary" href="#services">Explore services</a><span>Breeding coordination and animal care in one place.</span></div>
+            </section>
+            <div class="hero-visual">
+                <img src="assets/images/Veterinary%20Pig%20Services%20Farm%20Sign.png" alt="Veterinary pig services farm sign">
+            </div>
+        </div>
+        <section class="shell preview-note" id="preview-note" aria-label="Preview limitation">
+            <p><strong>Read-only preview.</strong> Sign-in, registration, service requests, and messaging require the PHP/MySQL version and are not active on this GitHub Pages site.</p>
+        </section>
+        <section class="shell service-showcase" id="services">
+            <div class="showcase-heading"><span class="eyebrow">One connected platform</span><h2>Services for pig owners and providers.</h2><p>Browse the core service areas represented in the system.</p></div>
+            <div class="service-showcase-grid">
+                <article class="showcase-card"><img src="assets/images/Male%20Pig%20Services.png" alt="Male pig breeding services"><div class="showcase-card-body"><span class="showcase-number">01</span><h3>Male Pig Breeding Services</h3><p>Showcase male pigs and help owners discover possible breeding partners by breed and location.</p></div></article>
+                <article class="showcase-card"><img src="assets/images/Female%20Pig%20Services.png" alt="Female pig breeding services"><div class="showcase-card-body"><span class="showcase-number">02</span><h3>Female Pig Breeding Services</h3><p>Find potential partners and coordinate breeding appointments with service providers.</p></div></article>
+                <article class="showcase-card"><img src="assets/images/Vaccination%20And%20Injections.png" alt="Pig vaccination and veterinary care"><div class="showcase-card-body"><span class="showcase-number">03</span><h3>Veterinary Services</h3><p>Connect with veterinary providers for assessments, vaccinations, injections, and follow-up care.</p></div></article>
+            </div>
+        </section>
+        <section class="shell landing-section" id="about"><div class="landing-section-copy"><span class="eyebrow">About Pig Services</span><h2>A digital space for local pig owners.</h2><p>Pig Services brings breeding coordination and veterinary support into one organized platform for Bindoy and nearby communities.</p></div></section>
+        <section class="landing-section landing-section-muted" id="how-it-works"><div class="shell"><div class="showcase-heading"><span class="eyebrow">How It Works</span><h2>From discovery to care.</h2></div><div class="process-grid"><div><strong>01</strong><h3>Create an account</h3><p>Choose an owner or veterinary provider account type.</p></div><div><strong>02</strong><h3>Explore services</h3><p>Review breeding and veterinary service details and locations.</p></div><div><strong>03</strong><h3>Coordinate</h3><p>Submit requests and communicate with the service provider.</p></div></div></div></section>
+        <section class="shell landing-section" id="features"><div class="showcase-heading"><span class="eyebrow">Features</span><h2>Organized tools for everyday decisions.</h2></div><div class="feature-grid"><div><h3>Clear profiles</h3><p>Keep owner and provider contact information organized.</p></div><div><h3>Service requests</h3><p>Track preferred dates, request status, and service history.</p></div><div><h3>Private messaging</h3><p>Keep transaction conversations connected to each request.</p></div></div></section>
+        <section class="landing-section contact-section" id="contact"><div class="shell contact-inner"><div><span class="eyebrow">Contact Us</span><h2>Pig Services for Bindoy, Negros Oriental.</h2><p>This page is a visual preview. The interactive system requires a PHP/MySQL host.</p></div><a class="button primary" href="#preview-note">Preview limitations</a></div></section>
+    </main>
+    <footer class="shell preview-footer">Pig Services · Bindoy, Negros Oriental · System preview</footer>
+</body>
+</html>
