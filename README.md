@@ -24,6 +24,23 @@ The static preview is in `docs/`. It shows the public landing page and works on 
 
 Do not commit database passwords or other hosting credentials to GitHub. Use a PHP/MySQL host for the fully functional system.
 
+## Automatic InfinityFree deployment and setup
+
+The workflow in `.github/workflows/deploy-infinityfree.yml` deploys the repository to InfinityFree `htdocs/` whenever code is pushed to `main`. It can also be started manually from the repository's **Actions** tab. It deploys the PHP app, not the GitHub Pages preview.
+
+Before enabling it, open **Settings → Secrets and variables → Actions** in the GitHub repository and add these repository secrets using the values from InfinityFree's FTP and MySQL details pages:
+
+- `FTP_SERVER`
+- `FTP_USERNAME`
+- `FTP_PASSWORD`
+- `DB_HOST`
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASS`
+- `ADMIN_SETUP_TOKEN` (a new random setup-only token)
+
+The first visit to `https://<your-domain>/setup_admin.php` initializes tables from `database.sql` if they are missing, then asks for the setup token and the administrator email and password. After the admin is created, the setup page will no longer allow another admin to be created. Keep all secrets in GitHub's Secrets settings; never put their values in this file or send them in chat.
+
 ## View from another device on the same Wi-Fi
 
 1. Keep Apache and MySQL running on the computer with XAMPP.
