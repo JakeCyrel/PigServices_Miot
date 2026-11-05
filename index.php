@@ -21,6 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!$user || !password_verify($password, $user['password_hash'])) {
             $errors[] = 'The email or password is incorrect.';
+        } elseif ($user['role'] !== 'admin' && (int) $user['is_verified'] !== 1) {
+            $errors[] = 'Your account is waiting for admin approval.';
         } else {
             session_regenerate_id(true);
             unset($user['password_hash']);
@@ -45,9 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Password must be at least 8 characters.';
         } else {
             try {
-                $statement = $pdo->prepare('INSERT INTO users (full_name, email, phone, address, password_hash, role, is_verified) VALUES (?, ?, ?, ?, ?, ?, 1)');
+                $statement = $pdo->prepare('INSERT INTO users (full_name, email, phone, address, password_hash, role, is_verified) VALUES (?, ?, ?, ?, ?, ?, 0)');
                 $statement->execute([$fullName, $email, $phone, $address, password_hash($password, PASSWORD_DEFAULT), $role]);
-                flash('success', 'Account created successfully. You can now sign in immediately.');
+                flash('success', 'Account created successfully. Your account is pending admin approval.');
                 redirect('index.php?mode=login#access');
             } catch (PDOException $exception) {
                 $errors[] = $exception->getCode() === '23000' ? 'That email address is already registered.' : 'Unable to create the account right now.';
