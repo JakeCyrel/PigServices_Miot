@@ -1,0 +1,79 @@
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: infinityfree-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check required secrets
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: |
+          for name in FTP_SERVER FTP_USERNAME FTP_PASSWORD DB_HOST DB_NAME DB_USER DB_PASS; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing GitHub Actions secret: $name"
+              exit 1
+            fi
+          done
+
+      - name: Generate private database settings
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: |
+          python3 - <<'PY'
+          import base64
+          import json
+          import os
+
+          settings = {
+              "host": os.environ["DB_HOST"],
+              "name": os.environ["DB_NAME"],
+              "user": os.environ["DB_USER"],
+              "pass": os.environ["DB_PASS"],
+          }
+          encoded = base64.b64encode(json.dumps(settings).encode()).decode()
+          with open("db-settings.php", "w", encoding="utf-8") as config:
+              config.write("<?php\nreturn json_decode(base64_decode('" + encoded + "'), true);\n")
+          PY
+
+      - name: Deploy site files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          server-dir: htdocs/
+          local-dir: ./
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.github/**
+            **/docs/**
+            **/*.zip
