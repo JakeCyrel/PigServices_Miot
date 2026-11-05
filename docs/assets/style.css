@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root {
-    --ink: #17211b;
-    --muted: #66736a;
+    --ink: #000000;
+    --muted: #2e2e2e;
     --paper: #f5f7f3;
     --white: #ffffff;
     --line: #dce5dd;
@@ -22,7 +22,7 @@ h1, h2, h3 { margin: 0 0 12px; font-family: 'DM Sans', sans-serif; font-weight: 
 h1 { font-size: 1.75rem; letter-spacing: 0; }
 h2 { font-size: 1.3rem; }
 h3 { font-size: 1rem; }
-p { color: var(--muted); line-height: 1.6; }
+p { color: var(--ink); line-height: 1.6; }
 a { color: inherit; text-decoration: none; }
 
 .shell { width: min(1180px, calc(100% - 56px)); margin: 0 auto; }
