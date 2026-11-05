@@ -29,8 +29,9 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
+          ADMIN_SETUP_TOKEN: ${{ secrets.ADMIN_SETUP_TOKEN }}
         run: |
-          for name in FTP_SERVER FTP_USERNAME FTP_PASSWORD DB_HOST DB_NAME DB_USER DB_PASS; do
+          for name in FTP_SERVER FTP_USERNAME FTP_PASSWORD DB_HOST DB_NAME DB_USER DB_PASS ADMIN_SETUP_TOKEN; do
             if [ -z "${!name}" ]; then
               echo "::error::Missing GitHub Actions secret: $name"
               exit 1
@@ -43,6 +44,7 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
+          ADMIN_SETUP_TOKEN: ${{ secrets.ADMIN_SETUP_TOKEN }}
         run: |
           python3 - <<'PY'
           import base64
@@ -54,6 +56,7 @@ jobs:
               "name": os.environ["DB_NAME"],
               "user": os.environ["DB_USER"],
               "pass": os.environ["DB_PASS"],
+              "setup_token": os.environ["ADMIN_SETUP_TOKEN"],
           }
           encoded = base64.b64encode(json.dumps(settings).encode()).decode()
           with open("db-settings.php", "w", encoding="utf-8") as config:
