@@ -3,66 +3,54 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A preview of Pig Services, a local pig breeding and veterinary service coordination system for Bindoy, Negros Oriental.">
-    <title>Pig Services | System Preview</title>
+    <meta name="description" content="Pig Services connects pig owners with breeding and veterinary services in Bindoy, Negros Oriental.">
+    <title>Pig Services | Bindoy</title>
     <link rel="stylesheet" href="assets/style.css">
-    <style>
-        .preview-note { margin: 0 auto 32px; padding: 18px 22px; border-left: 4px solid var(--orange); background: #fff; }
-        .preview-note p { margin: 0; }
-        .preview-note strong { color: var(--ink); }
-        .preview-tag { display: inline-flex; align-items: center; min-height: 28px; padding: 4px 10px; border-radius: 6px; background: var(--lime); color: var(--green-dark); font-size: .75rem; font-weight: 700; }
-        .preview-footer { padding: 28px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
-        @media (max-width: 760px) {
-            .landing-header { align-items: flex-start; flex-direction: column; gap: 12px; padding: 14px 0; }
-            .landing-nav { width: 100%; flex-wrap: wrap; gap: 10px 14px; }
-            .auth-layout { min-height: auto; grid-template-columns: 1fr; gap: 28px; padding-top: 36px; }
-            .hero-visual img { max-height: 330px; }
-            .preview-note { margin-bottom: 12px; }
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/supabase-config.js"></script>
+    <script src="assets/app.js" defer></script>
 </head>
 <body>
     <header class="shell topbar landing-header">
         <a class="brand" href="#home"><span class="brand-mark">P</span> Pig Services</a>
         <nav class="nav landing-nav" aria-label="Main navigation">
-            <a href="#home">Home</a>
-            <a href="#about">About Us</a>
-            <a href="#services">Services</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#features">Features</a>
-            <a href="#contact">Contact</a>
-            <a class="button light small" href="#preview-note">Preview</a>
+            <a href="#home">Home</a><a href="#services">Services</a><a href="#member-area">My activity</a>
+            <span id="current-user" class="current-user" hidden></span>
+            <button id="sign-in-button" class="button light small" type="button">Sign in</button>
+            <button id="sign-up-button" class="button primary small" type="button">Create account</button>
+            <button id="sign-out-button" class="button light small" type="button" hidden>Sign out</button>
         </nav>
     </header>
     <main id="home">
         <div class="shell auth-layout">
-            <section class="auth-intro">
-                <span class="eyebrow">A trusted local network</span>
-                <span class="preview-tag">SYSTEM PREVIEW</span>
-                <h1>Better matches for healthier piglets.</h1>
-                <p class="hero-copy">A local platform concept for connecting pig owners with breeding partners and veterinary services in Bindoy, Negros Oriental.</p>
-                <div class="hero-actions"><a class="button primary" href="#services">Explore services</a><span>Breeding coordination and animal care in one place.</span></div>
-            </section>
-            <div class="hero-visual">
-                <img src="assets/images/Veterinary%20Pig%20Services%20Farm%20Sign.png" alt="Veterinary pig services farm sign">
-            </div>
+            <section class="auth-intro"><span class="eyebrow">Bindoy, Negros Oriental</span><h1>Better matches for healthier piglets.</h1><p class="hero-copy">Find breeding services, connect with local owners, and coordinate veterinary care in one place.</p><div class="hero-actions"><a class="button primary" href="#services">Browse services</a><span>For pig owners and local providers.</span></div></section>
+            <div class="hero-visual"><img src="assets/images/Veterinary%20Pig%20Services%20Farm%20Sign.png" alt="Veterinary pig services farm sign"></div>
         </div>
-        <section class="shell preview-note" id="preview-note" aria-label="Preview limitation">
-            <p><strong>Read-only preview.</strong> Sign-in, registration, service requests, and messaging require the PHP/MySQL version and are not active on this GitHub Pages site.</p>
-        </section>
+        <section class="shell notice" id="setup-notice" hidden><strong>Setup required</strong><p>Enter your Supabase project URL and public anon key in <code>docs/assets/supabase-config.js</code>, then create the database from <code>supabase/schema.sql</code>.</p></section>
+        <section class="shell notice" id="app-notice" role="status" hidden></section>
         <section class="shell service-showcase" id="services">
-            <div class="showcase-heading"><span class="eyebrow">One connected platform</span><h2>Services for pig owners and providers.</h2><p>Browse the core service areas represented in the system.</p></div>
-            <div class="service-showcase-grid">
-                <article class="showcase-card"><img src="assets/images/Male%20Pig%20Services.png" alt="Male pig breeding services"><div class="showcase-card-body"><span class="showcase-number">01</span><h3>Male Pig Breeding Services</h3><p>Showcase male pigs and help owners discover possible breeding partners by breed and location.</p></div></article>
-                <article class="showcase-card"><img src="assets/images/Female%20Pig%20Services.png" alt="Female pig breeding services"><div class="showcase-card-body"><span class="showcase-number">02</span><h3>Female Pig Breeding Services</h3><p>Find potential partners and coordinate breeding appointments with service providers.</p></div></article>
-                <article class="showcase-card"><img src="assets/images/Vaccination%20And%20Injections.png" alt="Pig vaccination and veterinary care"><div class="showcase-card-body"><span class="showcase-number">03</span><h3>Veterinary Services</h3><p>Connect with veterinary providers for assessments, vaccinations, injections, and follow-up care.</p></div></article>
-            </div>
+            <div class="showcase-heading"><span class="eyebrow">Local marketplace</span><h2>Available services</h2><p>Breeding and veterinary listings from the community.</p></div>
+            <div class="service-grid" id="service-grid"><p class="empty-state">Connect to Supabase to load services.</p></div>
         </section>
-        <section class="shell landing-section" id="about"><div class="landing-section-copy"><span class="eyebrow">About Pig Services</span><h2>A digital space for local pig owners.</h2><p>Pig Services brings breeding coordination and veterinary support into one organized platform for Bindoy and nearby communities.</p></div></section>
-        <section class="landing-section landing-section-muted" id="how-it-works"><div class="shell"><div class="showcase-heading"><span class="eyebrow">How It Works</span><h2>From discovery to care.</h2></div><div class="process-grid"><div><strong>01</strong><h3>Create an account</h3><p>Choose an owner or veterinary provider account type.</p></div><div><strong>02</strong><h3>Explore services</h3><p>Review breeding and veterinary service details and locations.</p></div><div><strong>03</strong><h3>Coordinate</h3><p>Submit requests and communicate with the service provider.</p></div></div></div></section>
-        <section class="shell landing-section" id="features"><div class="showcase-heading"><span class="eyebrow">Features</span><h2>Organized tools for everyday decisions.</h2></div><div class="feature-grid"><div><h3>Clear profiles</h3><p>Keep owner and provider contact information organized.</p></div><div><h3>Service requests</h3><p>Track preferred dates, request status, and service history.</p></div><div><h3>Private messaging</h3><p>Keep transaction conversations connected to each request.</p></div></div></section>
-        <section class="landing-section contact-section" id="contact"><div class="shell contact-inner"><div><span class="eyebrow">Contact Us</span><h2>Pig Services for Bindoy, Negros Oriental.</h2><p>This page is a visual preview. The interactive system requires a PHP/MySQL host.</p></div><a class="button primary" href="#preview-note">Preview limitations</a></div></section>
+        <section class="shell member-area" id="member-area" hidden>
+            <div class="section-heading"><div><span class="eyebrow">Your account</span><h2>My activity</h2></div></div>
+            <section class="panel form-panel" id="create-service-panel" hidden><span class="eyebrow">Provider tools</span><h2>List a service</h2><form id="listing-form" class="form-grid"><label>Category<select name="service_type"><option value="breeding">Breeding</option><option value="veterinary">Veterinary</option></select></label><label>Service or pig name<input name="pig_name" required maxlength="120"></label><label>Breed or specialty<input name="breed" required maxlength="100"></label><label>Age in months<input name="age_months" type="number" min="0" max="120" value="0" required></label><label>Location<input name="location" required maxlength="160"></label><label class="wide">Description<textarea name="description" rows="3" required maxlength="4000"></textarea></label><button class="button primary" type="submit">Publish listing</button></form></section>
+            <section class="panel"><span class="eyebrow">Requests</span><h2>Service requests</h2><div id="request-list"><p class="empty-state">Loading requests…</p></div></section>
+            <section class="panel profile-panel"><span class="eyebrow">Your details</span><h2>Profile</h2><form id="profile-form" class="form-grid"><label>Full name<input id="profile-name" name="full_name" required maxlength="120"></label><label>Phone<input id="profile-phone" name="phone" required maxlength="30"></label><label class="wide">Address<input id="profile-address" name="address" required maxlength="255"></label><button class="button primary" type="submit">Save profile</button></form></section>
+            <section class="panel" id="admin-panel" hidden><span class="eyebrow">Administration</span><h2>Registered profiles</h2><div id="admin-user-list"></div></section>
+            <section class="panel conversation-card" id="conversation" hidden><div class="conversation-meta"><h2 id="conversation-title">Messages</h2></div><div class="message-list" id="message-list"></div><form id="message-form" class="message-composer"><input id="message-recipient-id" type="hidden"><label for="message-text">Write a message</label><textarea id="message-text" name="message" rows="3" maxlength="2000" required></textarea><div class="composer-footer"><small>Messages are visible only to request participants.</small><button class="button primary" type="submit">Send</button></div></form></section>
+        </section>
+        <section class="landing-section landing-section-muted" id="about"><div class="shell"><div class="showcase-heading"><span class="eyebrow">How it works</span><h2>Discover. Request. Coordinate.</h2></div><div class="process-grid"><div><strong>01</strong><h3>Create an account</h3><p>Join as an owner or service provider.</p></div><div><strong>02</strong><h3>Find a service</h3><p>Browse breeding and veterinary services nearby.</p></div><div><strong>03</strong><h3>Stay connected</h3><p>Manage requests and message participants.</p></div></div></div></section>
     </main>
-    <footer class="shell preview-footer">Pig Services · Bindoy, Negros Oriental · System preview</footer>
+    <footer class="shell preview-footer">Pig Services · Bindoy, Negros Oriental</footer>
+
+    <dialog id="auth-dialog" class="panel auth-dialog">
+        <button id="close-auth" class="modal-close" type="button" aria-label="Close">&times;</button>
+        <div class="auth-card-brand"><span class="brand-mark">P</span><span>Pig Services</span></div>
+        <p id="auth-message" class="alert" role="status" hidden></p>
+        <form id="login-form"><h2>Sign in</h2><label>Email<input name="email" type="email" autocomplete="email" required></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button class="button primary" type="submit">Sign in</button><button id="show-signup" class="button light" type="button">Create account</button></form>
+        <form id="signup-form" hidden><h2>Create account</h2><label>Full name<input name="full_name" autocomplete="name" required maxlength="120"></label><label>Email<input name="email" type="email" autocomplete="email" required></label><label>Phone<input name="phone" autocomplete="tel" required maxlength="30"></label><label>Address<input name="address" autocomplete="street-address" required maxlength="255"></label><label>Account type<select name="role"><option value="female_owner">Female pig owner</option><option value="male_owner">Male pig owner</option><option value="veterinarian">Veterinary provider</option></select></label><label>Password (at least 8 characters)<input name="password" type="password" minlength="8" autocomplete="new-password" required></label><button class="button primary" type="submit">Register</button><button id="show-login" class="button light" type="button">Back to sign in</button></form>
+    </dialog>
+    <dialog id="request-dialog" class="panel auth-dialog"><button id="close-request" class="modal-close" type="button" aria-label="Close">&times;</button><span class="eyebrow">New request</span><h2>Request this service</h2><form id="request-form"><input id="request-service-id" name="service_id" type="hidden"><label>Preferred date<input name="preferred_date" type="date" required></label><label>Message to provider<textarea name="notes" rows="3" maxlength="2000"></textarea></label><button class="button primary" type="submit">Send request</button></form></dialog>
 </body>
 </html>
