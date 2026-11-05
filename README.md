@@ -28,16 +28,19 @@ Do not commit database passwords or other hosting credentials to GitHub. Use a P
 
 The workflow in `.github/workflows/deploy-infinityfree.yml` deploys the repository to InfinityFree `htdocs/` whenever code is pushed to `main`. It can also be started manually from the repository's **Actions** tab. It deploys the PHP app, not the GitHub Pages preview.
 
-Before enabling it, open **Settings → Secrets and variables → Actions** in the GitHub repository and add these repository secrets using the values from InfinityFree's FTP and MySQL details pages:
+Before enabling it, open **Settings → Secrets and variables → Actions** in the GitHub repository. Add the non-sensitive connection details as repository variables (or keep them as secrets; the workflow supports either):
 
-- `FTP_SERVER`
-- `FTP_USERNAME`
-- `FTP_PASSWORD`
-- `DB_HOST`
-- `DB_NAME`
-- `DB_USER`
-- `DB_PASS`
-- `ADMIN_SETUP_TOKEN` (a new random setup-only token)
+- `FTP_SERVER`: `ftpupload.net`
+- `FTP_USERNAME`: your InfinityFree FTP username
+- `DB_HOST`: your InfinityFree MySQL hostname
+- `DB_NAME`: your InfinityFree database name
+- `DB_USER`: your InfinityFree MySQL username
+
+Add these as repository secrets, never variables:
+
+- `FTP_PASSWORD`: your InfinityFree FTP password
+- `DB_PASS`: your MySQL password
+- `ADMIN_SETUP_TOKEN`: a new random setup-only token
 
 The first visit to `https://<your-domain>/setup_admin.php` initializes tables from `database.sql` if they are missing, then asks for the setup token and the administrator email and password. After the admin is created, the setup page will no longer allow another admin to be created. Keep all secrets in GitHub's Secrets settings; never put their values in this file or send them in chat.
 

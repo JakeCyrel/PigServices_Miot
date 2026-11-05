@@ -22,27 +22,33 @@ jobs:
 
       - name: Check required secrets
         env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_SERVER: ${{ vars.FTP_SERVER || secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ vars.FTP_USERNAME || secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
+          DB_HOST: ${{ vars.DB_HOST || secrets.DB_HOST }}
+          DB_NAME: ${{ vars.DB_NAME || secrets.DB_NAME }}
+          DB_USER: ${{ vars.DB_USER || secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
           ADMIN_SETUP_TOKEN: ${{ secrets.ADMIN_SETUP_TOKEN }}
         run: |
-          for name in FTP_SERVER FTP_USERNAME FTP_PASSWORD DB_HOST DB_NAME DB_USER DB_PASS ADMIN_SETUP_TOKEN; do
+          for name in FTP_PASSWORD DB_PASS ADMIN_SETUP_TOKEN; do
             if [ -z "${!name}" ]; then
               echo "::error::Missing GitHub Actions secret: $name"
+              exit 1
+            fi
+          done
+          for name in FTP_SERVER FTP_USERNAME DB_HOST DB_NAME DB_USER; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing GitHub Actions variable or secret: $name"
               exit 1
             fi
           done
 
       - name: Generate private database settings
         env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
+          DB_HOST: ${{ vars.DB_HOST || secrets.DB_HOST }}
+          DB_NAME: ${{ vars.DB_NAME || secrets.DB_NAME }}
+          DB_USER: ${{ vars.DB_USER || secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
           ADMIN_SETUP_TOKEN: ${{ secrets.ADMIN_SETUP_TOKEN }}
         run: |
@@ -66,8 +72,8 @@ jobs:
       - name: Deploy site files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          server: ${{ vars.FTP_SERVER || secrets.FTP_SERVER }}
+          username: ${{ vars.FTP_USERNAME || secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
