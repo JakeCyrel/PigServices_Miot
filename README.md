@@ -13,44 +13,16 @@ Responsive PHP/MySQL starter system for connecting male and female pig owners in
 
 The demo listing is included for testing. New accounts are available immediately after registration. Administrators can view the registered user directory from their dashboard.
 
-## Deploy the interactive app with GitHub Pages and Supabase
+## Publish a visual preview with GitHub Pages
 
-GitHub Pages serves the static client in `docs/`; Supabase provides authentication and the database. The legacy PHP files are not used by this deployment.
+The static preview is in `docs/`. It shows the public landing page and works on phones, but GitHub Pages does not run PHP or MySQL, so sign-in, registration, service requests, and messaging are disabled there.
 
-1. Create a Supabase project on its free plan.
-2. In the Supabase SQL Editor, run `supabase/schema.sql` to create the tables, signup profile trigger, and row-level security policies.
-3. In Supabase **Project Settings → API**, copy the Project URL and public anon/publishable key into `docs/assets/supabase-config.js`. Never put a `service_role` key in this file. The anon key is intended for browser use and relies on the schema's row-level security.
-4. In Supabase **Authentication → URL Configuration**, set the Site URL to `https://jakecyrel.github.io/PigServices_Miot/` and allow that URL as a redirect URL.
-5. In GitHub, open **Settings → Pages**, choose **Deploy from a branch**, select `main` and `/docs`, then save. GitHub Actions deploys the page on each push to `main`.
-6. Create an account on the site. To make the first account an administrator, use the Supabase SQL Editor and replace the email below with that account's email:
+1. Push this repository to GitHub.
+2. In the repository, open **Settings → Pages**.
+3. Under **Build and deployment**, choose **Deploy from a branch**, select the branch containing `docs/`, choose the `/docs` folder, and save.
+4. Open the published address shown on that settings page. Project sites usually use `https://<account>.github.io/<repository>/`.
 
-```sql
-update public.profiles
-set role = 'admin'
-where email = 'admin@example.com';
-```
-
-Keep database passwords and the Supabase `service_role` key out of GitHub. The public anon key may be in `supabase-config.js` only with row-level security enabled.
-
-## Automatic InfinityFree deployment and setup
-
-The workflow in `.github/workflows/deploy-infinityfree.yml` deploys the repository to InfinityFree `htdocs/` whenever code is pushed to `main`. It can also be started manually from the repository's **Actions** tab. It deploys the PHP app, not the GitHub Pages preview.
-
-Before enabling it, open **Settings → Secrets and variables → Actions** in the GitHub repository. Add the non-sensitive connection details as repository variables (or keep them as secrets; the workflow supports either):
-
-- `FTP_SERVER`: `ftpupload.net`
-- `FTP_USERNAME`: your InfinityFree FTP username
-- `DB_HOST`: your InfinityFree MySQL hostname
-- `DB_NAME`: your InfinityFree database name
-- `DB_USER`: your InfinityFree MySQL username
-
-Add these as repository secrets, never variables:
-
-- `FTP_PASSWORD`: your InfinityFree FTP password
-- `DB_PASS`: your MySQL password
-- `ADMIN_SETUP_TOKEN`: a new random setup-only token
-
-The first visit to `https://<your-domain>/setup_admin.php` initializes tables from `database.sql` if they are missing, then asks for the setup token and the administrator email and password. After the admin is created, the setup page will no longer allow another admin to be created. Keep all secrets in GitHub's Secrets settings; never put their values in this file or send them in chat.
+Do not commit database passwords or other hosting credentials to GitHub. Use a PHP/MySQL host for the fully functional system.
 
 ## View from another device on the same Wi-Fi
 
